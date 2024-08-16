@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -53,18 +54,27 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         // Validate the request data
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:students,email',
             'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'enrollment_date' => 'nullable|date',
+            'status' => 'nullable|string|in:active,inactive',
+            'parent_guardian_name' => 'nullable|string|max:255',
+            'parent_guardian_phone' => 'nullable|string|max:20',
         ]);
 
+        // Handle profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
+        }
+
         // Create a new student
-        Student::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-        ]);
+        Student::create($validated);
 
         // Redirect to the index page with a success message
         return redirect()->route('students.index')->with('success', 'Student added successfully.');
@@ -91,18 +101,32 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         // Validate the request data
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:students,email,' . $student->id,
             'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'date_of_birth' => 'nullable|date',
+            'gender' => 'nullable|string|in:male,female,other',
+            'enrollment_date' => 'nullable|date',
+            'status' => 'nullable|string|in:active,inactive',
+            'parent_guardian_name' => 'nullable|string|max:255',
+            'parent_guardian_phone' => 'nullable|string|max:20',
         ]);
 
+        // Handle profile picture upload
+        if ($request->hasFile('profile_picture')) {
+            // Delete the old profile picture if it exists
+            if ($student->profile_picture) {
+                Storage::disk('public')->delete($student->profile_picture);
+            }
+            // Store the new profile picture
+            $validated['profile_picture'] = $request->file('profile_picture')->store('profile_pictures', 'public');
+        }
+
         // Update the student
-        $student->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-        ]);
+        $student->update($validated);
 
         // Redirect to the index page with a success message
         return redirect()->route('students.index')->with('success', 'Student updated successfully.');
@@ -116,6 +140,11 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        // Delete the profile picture if it exists
+        if ($student->profile_picture) {
+            Storage::disk('public')->delete($student->profile_picture);
+        }
+
         // Delete the student
         $student->delete();
 

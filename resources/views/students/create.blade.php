@@ -19,7 +19,7 @@
         }
         .container {
             margin-top: 50px;
-            max-width: 600px;
+            max-width: 800px;
         }
         .card {
             border: none;
@@ -61,6 +61,9 @@
             border-radius: 20px;
             padding: 10px;
         }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +78,7 @@
                 Add New Student
             </div>
             <div class="card-body">
-                <form action="{{ route('students.store') }}" method="POST">
+                <form action="{{ route('students.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
@@ -88,6 +91,46 @@
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone</label>
                         <input type="text" class="form-control" id="phone" name="phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="profile_picture" class="form-label">Profile Picture</label>
+                        <input type="file" class="form-control" id="profile_picture" name="profile_picture">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date_of_birth" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="date_of_birth" name="date_of_birth">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="enrollment_date" class="form-label">Enrollment Date</label>
+                        <input type="date" class="form-control" id="enrollment_date" name="enrollment_date">
+                    </div>
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="parent_guardian_name" class="form-label">Parent/Guardian Name</label>
+                        <input type="text" class="form-control" id="parent_guardian_name" name="parent_guardian_name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="parent_guardian_phone" class="form-label">Parent/Guardian Phone</label>
+                        <input type="text" class="form-control" id="parent_guardian_phone" name="parent_guardian_phone">
                     </div>
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary">Save Student</button>

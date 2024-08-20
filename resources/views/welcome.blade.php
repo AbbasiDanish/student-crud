@@ -162,8 +162,16 @@
             <h1>Welcome to Student Management System</h1>
             <p>Efficiently manage your students with our intuitive and powerful system.</p>
             <a href="{{ route('students.index') }}" class="btn btn-primary btn-lg">View Students</a>
+            <!-- Logout Button -->
+            <a href="{{ route('logout') }}" class="btn btn-secondary btn-lg" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </div>
     </header>
+
     <div class="container features-section">
         <div class="row">
             <div class="col-md-6 mb-4">
@@ -184,7 +192,8 @@
                         <i class="fas fa-cogs"></i>
                         <h3 class="card-title">Customizable Settings</h3>
                         <p class="card-text">Adapt the system to meet your specific needs with customizable settings.</p>
-                        <a href="#" class="btn btn-secondary">Explore Features</a>
+                        <a href="{{ route('advanced.features') }}" class="btn btn-secondary">Explore Features</a>
+
                     </div>
                 </div>
             </div>

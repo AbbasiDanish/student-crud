@@ -76,7 +76,7 @@
         <h1>Welcome to Our Platform</h1>
         <p>We provide an innovative solution for managing student records efficiently. Our platform offers user-friendly tools and features to streamline administrative tasks and enhance productivity.</p>
         <p>Log in to access your account or register to join our growing community and start benefiting from our services.</p>
-        <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+        <a href="{{ route('login') }}"class="btn btn-primary">Login</a>
         <a href="{{ route('register') }}" class="btn btn-secondary">Register</a>
         <footer>
             <p class="footer-text">&copy; {{ date('Y') }} Your Platform Name. All rights reserved.</p>
